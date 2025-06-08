@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Formulário de Ordem de Serviço</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      padding: 30px;
+    }
+    .container {
+      background: white;
+      max-width: 500px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #003366;
+      text-align: center;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: vertical;
+    }
+    button {
+      background-color: #007ACC;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #005fa3;
+    }
+    .success, .error {
+      text-align: center;
+      font-weight: bold;
+    }
+    .success { color: green; }
+    .error { color: red; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Ordem de Serviço</h2>
+    <form id="osForm">
+      <label for="cliente">Nome do Cliente:</label>
+      <input type="text" name="cliente" id="cliente" required />
+
+      <label for="tecnico">Técnico Responsável:</label>
+      <input type="text" name="tecnico" id="tecnico" required />
+
+      <label for="descricao">Descrição do Serviço:</label>
+      <textarea name="descricao" id="descricao" rows="5" required></textarea>
+
+      <button type="submit">Enviar Ordem</button>
+    </form>
+
+    <p id="mensagem" class=""></p>
+  </div>
+
+  <script>
+    const form = document.getElementById("osForm");
+    const mensagem = document.getElementById("mensagem");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      mensagem.textContent = "Enviando...";
+      mensagem.className = "";
+
+      const formData = new FormData();
+      formData.append("cliente", form.cliente.value);
+      formData.append("tecnico", form.tecnico.value);
+      formData.append("descricao", form.descricao.value);
+
+      fetch("https://script.google.com/macros/s/AKfycbwmCbOl7DGvta8-CaagBSL6FANEHe4SeYeaEMB9vmekQ1WbHTYhXi_pERVpS8vIPi4/exec", {
+        method: "POST",
+        body: formData
+      })
+      .then(response => response.text())
+      .then(result => {
+        if (result === "OK") {
+          mensagem.textContent = "Ordem enviada com sucesso!";
+          mensagem.className = "success";
+          form.reset();
+        } else {
+          throw new Error("Erro inesperado");
+        }
+      })
+      .catch(error => {
+        console.error("Erro:", error);
+        mensagem.textContent = "Erro ao enviar ordem. Tente novamente.";
+        mensagem.className = "error";
+      });
+    });
+  </script>
+</body>
+</html>
