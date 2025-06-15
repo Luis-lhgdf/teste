@@ -58,65 +58,65 @@
     <form id="osForm">
       
       <label>Data do Serviço:</label>
-      <input type="text" id="dataServico" value="15/06/2025 10:00" required />
+      <input type="date" id="dataServico" name="dataServico" required value="2025-06-15"/>
 
       <label>Status:</label>
-      <select id="status">
-        <option>Em andamento</option>
-        <option>Finalizado</option>
-        <option>Aguardando Peça</option>
+      <select id="status" name="status" required>
+        <option value="Aberto">Aberto</option>
+        <option value="Em andamento">Em andamento</option>
+        <option value="Finalizado">Finalizado</option>
       </select>
 
       <label>Técnico Responsável:</label>
-      <input type="text" id="tecnico" value="Carlos Silva" required />
+      <input type="text" id="tecnico" name="tecnico" required value="Luis"/>
 
-      <label>Nome do Cliente:</label>
-      <input type="text" id="nomeFantasia" value="Empresa XYZ Ltda" required />
+      <label>Nome Fantasia:</label>
+      <input type="text" id="nomeFantasia" name="nomeFantasia" required value="Empresa Exemplo"/>
 
       <label>CNPJ do Cliente:</label>
-      <input type="text" id="cnpjCliente" value="00.000.000/0001-00" required />
+      <input type="text" id="cnpjCliente" name="cnpjCliente" required value="00.000.000/0001-00"/>
 
       <label>Equipamento:</label>
-      <input type="text" id="equipamento" value="Impressora HP LaserJet" required />
+      <input type="text" id="equipamento" name="equipamento" required value="Impressora HP"/>
 
-      <label>Defeito Apresentado:</label>
-      <textarea id="defeito" rows="3">Impressora não liga</textarea>
+      <label>Defeito:</label>
+      <textarea id="defeito" name="defeito" required>Não liga</textarea>
 
       <label>Serviço Realizado:</label>
-      <textarea id="servico" rows="3">Substituição da fonte de alimentação</textarea>
+      <textarea id="servico" name="servico" required>Troca da fonte de alimentação</textarea>
 
-      <label>Materiais Utilizados:</label>
-      <input type="text" id="materiais" value="Fonte HP 110V" />
+      <label>Materiais:</label>
+      <input type="text" id="materiais" name="materiais" value="Fonte 12V"/>
 
       <label>Quantidade:</label>
-      <input type="number" id="quantidade" value="1" />
+      <input type="number" id="quantidade" name="quantidade" value="1"/>
 
-      <label>Valor Total do Material (R$):</label>
-      <input type="text" id="valorTotalMaterial" value="150.00" />
+      <label>Valor Total Material (R$):</label>
+      <input type="number" id="valorTotalMaterial" name="valorTotalMaterial" step="0.01" value="150"/>
 
-      <label>Exibir Valor do Material:</label>
-      <select id="exibirValorMaterial">
-        <option>Sim</option>
-        <option>Não</option>
+      <label>Exibir Valor Material?</label>
+      <select id="exibirValorMaterial" name="exibirValorMaterial">
+        <option value="Sim">Sim</option>
+        <option value="Não">Não</option>
       </select>
 
-      <label>Valor do Serviço (R$):</label>
-      <input type="text" id="valorServico" value="250.00" />
+      <label>Valor Serviço (R$):</label>
+      <input type="number" id="valorServico" name="valorServico" step="0.01" value="200"/>
 
-      <label>Exibir Valor do Serviço:</label>
-      <select id="exibirValorServico">
-        <option>Sim</option>
-        <option>Não</option>
+      <label>Exibir Valor Serviço?</label>
+      <select id="exibirValorServico" name="exibirValorServico">
+        <option value="Sim">Sim</option>
+        <option value="Não">Não</option>
       </select>
 
       <label>Garantia:</label>
-      <input type="text" id="garantia" value="90 dias" />
+      <input type="text" id="garantia" name="garantia" value="90 dias"/>
 
-      <label>Assinatura Técnico (texto para simular):</label>
-      <input type="text" id="assinaturaTecnico" value="AssinaturaTecnicoBase64" />
+      <label>Assinatura Técnico (base64):</label>
+      <input type="text" id="assinaturaTecnico" name="assinaturaTecnico" value="AssinaturaTecnicoBase64"/>
 
-      <label>Assinatura Cliente (texto para simular):</label>
-      <input type="text" id="assinaturaCliente" value="AssinaturaClienteBase64" />
+      <label>Assinatura Cliente (base64):</label>
+      <input type="text" id="assinaturaCliente" name="assinaturaCliente" value="AssinaturaClienteBase64"/>
 
       <button type="submit">Enviar Ordem</button>
     </form>
@@ -133,37 +133,15 @@
       mensagem.textContent = "Enviando...";
       mensagem.className = "";
 
-      // Monta o objeto JSON com os dados
-      const dados = {
-        dataServico: document.getElementById("dataServico").value,
-        status: document.getElementById("status").value,
-        tecnico: document.getElementById("tecnico").value,
-        nomeFantasia: document.getElementById("nomeFantasia").value,
-        cnpjCliente: document.getElementById("cnpjCliente").value,
-        equipamento: document.getElementById("equipamento").value,
-        defeito: document.getElementById("defeito").value,
-        servico: document.getElementById("servico").value,
-        materiais: document.getElementById("materiais").value,
-        quantidade: document.getElementById("quantidade").value,
-        valorTotalMaterial: document.getElementById("valorTotalMaterial").value,
-        exibirValorMaterial: document.getElementById("exibirValorMaterial").value,
-        valorServico: document.getElementById("valorServico").value,
-        exibirValorServico: document.getElementById("exibirValorServico").value,
-        garantia: document.getElementById("garantia").value,
-        assinaturaTecnico: document.getElementById("assinaturaTecnico").value,
-        assinaturaCliente: document.getElementById("assinaturaCliente").value
-      };
+      const formData = new FormData(form);
 
       fetch("https://script.google.com/macros/s/AKfycbxSxmAsgqV6Cdxf6ZPLJrrMVlfBF2HtVM9Z1hoYTvurHn98D5eVtRtjjubOCUpY1Ax1/exec", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(dados)
+        body: formData
       })
-      .then(response => response.json())
+      .then(response => response.text())
       .then(result => {
-        if (result.status === "OK") {
+        if (result === "OK") {
           mensagem.textContent = "Ordem enviada com sucesso!";
           mensagem.className = "success";
           form.reset();
