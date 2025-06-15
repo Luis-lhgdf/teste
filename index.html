@@ -133,10 +133,13 @@
       mensagem.textContent = "Enviando...";
       mensagem.className = "";
 
-      const formData = new FormData(form);
+      const formData = new URLSearchParams(new FormData(form));
 
       fetch("https://script.google.com/macros/s/AKfycbxSxmAsgqV6Cdxf6ZPLJrrMVlfBF2HtVM9Z1hoYTvurHn98D5eVtRtjjubOCUpY1Ax1/exec", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
         body: formData
       })
       .then(response => response.text())
