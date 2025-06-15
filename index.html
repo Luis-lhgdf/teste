@@ -57,13 +57,13 @@
     <h2>Ordem de Serviço</h2>
     <form id="osForm">
       <label for="cliente">Nome do Cliente:</label>
-      <input type="text" name="cliente" id="cliente" required />
+      <input type="text" name="nomeFantasia" id="nomeFantasia" required />
 
       <label for="tecnico">Técnico Responsável:</label>
       <input type="text" name="tecnico" id="tecnico" required />
 
       <label for="descricao">Descrição do Serviço:</label>
-      <textarea name="descricao" id="descricao" rows="5" required></textarea>
+      <textarea name="servico" id="servico" rows="5" required></textarea>
 
       <button type="submit">Enviar Ordem</button>
     </form>
@@ -80,18 +80,37 @@
       mensagem.textContent = "Enviando...";
       mensagem.className = "";
 
-      const formData = new FormData();
-      formData.append("cliente", form.cliente.value);
-      formData.append("tecnico", form.tecnico.value);
-      formData.append("descricao", form.descricao.value);
+      // Monta o objeto JSON com os dados
+      const dados = {
+        dataServico: "15/06/2025 10:00",   // Exemplo fixo, você pode gerar dinamicamente se quiser
+        status: "Em andamento",
+        tecnico: form.tecnico.value,
+        nomeFantasia: form.nomeFantasia.value,
+        cnpjCliente: "00.000.000/0001-00", // Exemplo fixo
+        equipamento: "Impressora",
+        defeito: "Não liga",
+        servico: form.servico.value,
+        materiais: "Fonte",
+        quantidade: "1",
+        valorTotalMaterial: "150.00",
+        exibirValorMaterial: "Sim",
+        valorServico: "200.00",
+        exibirValorServico: "Sim",
+        garantia: "90 dias",
+        assinaturaTecnico: "AssinaturaTecnicoAqui",
+        assinaturaCliente: "AssinaturaClienteAqui"
+      };
 
       fetch("https://script.google.com/macros/s/AKfycbxSxmAsgqV6Cdxf6ZPLJrrMVlfBF2HtVM9Z1hoYTvurHn98D5eVtRtjjubOCUpY1Ax1/exec", {
         method: "POST",
-        body: formData
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dados)
       })
-      .then(response => response.text())
+      .then(response => response.json())
       .then(result => {
-        if (result === "OK") {
+        if (result.status === "OK") {
           mensagem.textContent = "Ordem enviada com sucesso!";
           mensagem.className = "success";
           form.reset();
