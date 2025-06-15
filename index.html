@@ -12,7 +12,7 @@
     }
     .container {
       background: white;
-      max-width: 500px;
+      max-width: 600px;
       margin: auto;
       padding: 30px;
       border-radius: 10px;
@@ -22,7 +22,7 @@
       color: #003366;
       text-align: center;
     }
-    input, textarea {
+    input, textarea, select {
       width: 100%;
       padding: 12px;
       margin-top: 10px;
@@ -56,14 +56,67 @@
   <div class="container">
     <h2>Ordem de Serviço</h2>
     <form id="osForm">
-      <label for="cliente">Nome do Cliente:</label>
-      <input type="text" name="nomeFantasia" id="nomeFantasia" required />
+      
+      <label>Data do Serviço:</label>
+      <input type="text" id="dataServico" value="15/06/2025 10:00" required />
 
-      <label for="tecnico">Técnico Responsável:</label>
-      <input type="text" name="tecnico" id="tecnico" required />
+      <label>Status:</label>
+      <select id="status">
+        <option>Em andamento</option>
+        <option>Finalizado</option>
+        <option>Aguardando Peça</option>
+      </select>
 
-      <label for="descricao">Descrição do Serviço:</label>
-      <textarea name="servico" id="servico" rows="5" required></textarea>
+      <label>Técnico Responsável:</label>
+      <input type="text" id="tecnico" value="Carlos Silva" required />
+
+      <label>Nome do Cliente:</label>
+      <input type="text" id="nomeFantasia" value="Empresa XYZ Ltda" required />
+
+      <label>CNPJ do Cliente:</label>
+      <input type="text" id="cnpjCliente" value="00.000.000/0001-00" required />
+
+      <label>Equipamento:</label>
+      <input type="text" id="equipamento" value="Impressora HP LaserJet" required />
+
+      <label>Defeito Apresentado:</label>
+      <textarea id="defeito" rows="3">Impressora não liga</textarea>
+
+      <label>Serviço Realizado:</label>
+      <textarea id="servico" rows="3">Substituição da fonte de alimentação</textarea>
+
+      <label>Materiais Utilizados:</label>
+      <input type="text" id="materiais" value="Fonte HP 110V" />
+
+      <label>Quantidade:</label>
+      <input type="number" id="quantidade" value="1" />
+
+      <label>Valor Total do Material (R$):</label>
+      <input type="text" id="valorTotalMaterial" value="150.00" />
+
+      <label>Exibir Valor do Material:</label>
+      <select id="exibirValorMaterial">
+        <option>Sim</option>
+        <option>Não</option>
+      </select>
+
+      <label>Valor do Serviço (R$):</label>
+      <input type="text" id="valorServico" value="250.00" />
+
+      <label>Exibir Valor do Serviço:</label>
+      <select id="exibirValorServico">
+        <option>Sim</option>
+        <option>Não</option>
+      </select>
+
+      <label>Garantia:</label>
+      <input type="text" id="garantia" value="90 dias" />
+
+      <label>Assinatura Técnico (texto para simular):</label>
+      <input type="text" id="assinaturaTecnico" value="AssinaturaTecnicoBase64" />
+
+      <label>Assinatura Cliente (texto para simular):</label>
+      <input type="text" id="assinaturaCliente" value="AssinaturaClienteBase64" />
 
       <button type="submit">Enviar Ordem</button>
     </form>
@@ -82,23 +135,23 @@
 
       // Monta o objeto JSON com os dados
       const dados = {
-        dataServico: "15/06/2025 10:00",   // Exemplo fixo, você pode gerar dinamicamente se quiser
-        status: "Em andamento",
-        tecnico: form.tecnico.value,
-        nomeFantasia: form.nomeFantasia.value,
-        cnpjCliente: "00.000.000/0001-00", // Exemplo fixo
-        equipamento: "Impressora",
-        defeito: "Não liga",
-        servico: form.servico.value,
-        materiais: "Fonte",
-        quantidade: "1",
-        valorTotalMaterial: "150.00",
-        exibirValorMaterial: "Sim",
-        valorServico: "200.00",
-        exibirValorServico: "Sim",
-        garantia: "90 dias",
-        assinaturaTecnico: "AssinaturaTecnicoAqui",
-        assinaturaCliente: "AssinaturaClienteAqui"
+        dataServico: document.getElementById("dataServico").value,
+        status: document.getElementById("status").value,
+        tecnico: document.getElementById("tecnico").value,
+        nomeFantasia: document.getElementById("nomeFantasia").value,
+        cnpjCliente: document.getElementById("cnpjCliente").value,
+        equipamento: document.getElementById("equipamento").value,
+        defeito: document.getElementById("defeito").value,
+        servico: document.getElementById("servico").value,
+        materiais: document.getElementById("materiais").value,
+        quantidade: document.getElementById("quantidade").value,
+        valorTotalMaterial: document.getElementById("valorTotalMaterial").value,
+        exibirValorMaterial: document.getElementById("exibirValorMaterial").value,
+        valorServico: document.getElementById("valorServico").value,
+        exibirValorServico: document.getElementById("exibirValorServico").value,
+        garantia: document.getElementById("garantia").value,
+        assinaturaTecnico: document.getElementById("assinaturaTecnico").value,
+        assinaturaCliente: document.getElementById("assinaturaCliente").value
       };
 
       fetch("https://script.google.com/macros/s/AKfycbxSxmAsgqV6Cdxf6ZPLJrrMVlfBF2HtVM9Z1hoYTvurHn98D5eVtRtjjubOCUpY1Ax1/exec", {
